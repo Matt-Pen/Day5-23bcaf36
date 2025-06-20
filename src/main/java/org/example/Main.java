@@ -17,6 +17,7 @@ public class Main {
             System.out.println("2.Update Employee Record.");
             System.out.println("3.Search for an Employee Record.");
             System.out.println("4.Delete a Employee Record.");
+            System.out.println("5.Display all Employees.");
             int ch=sc.nextInt();
             switch(ch) {
                 case 1:
@@ -31,7 +32,12 @@ public class Main {
                 case 4:
                     em.delete();
                     break;
-
+                case 5:
+                    sr.paginat();
+                    break;
+                case 6:
+                    sr.aggreg();
+                    break;
             }
         }
 

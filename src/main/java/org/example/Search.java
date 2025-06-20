@@ -3,9 +3,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Projections;
-import com.mongodb.client.model.Updates;
+import com.mongodb.client.model.*;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -14,6 +12,7 @@ import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -105,6 +104,42 @@ public class Search {
         }
 
 
+
+    }
+    public void paginat(){
+        Scanner scan= new Scanner(System.in);
+        String uri = "mongodb://admin:admin@172.21.17.53:27017,172.21.17.54:27017,172.21.17.92:27017/";
+        try{
+            MongoClient mongoClient= MongoClients.create(uri);
+            MongoDatabase database = mongoClient.getDatabase("CompanyMatt");
+            MongoCollection<Document> booksCollection = database.getCollection("Employee");
+
+            Bson filt= Sorts.ascending("name");
+            booksCollection.find().sort(filt).limit(5).forEach(doc8 -> System.out.println(doc8.toJson()));
+
+
+
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+
+    }
+    public void aggreg(){
+        Scanner scan= new Scanner(System.in);
+        String uri = "mongodb://admin:admin@172.21.17.53:27017,172.21.17.54:27017,172.21.17.92:27017/";
+        try{
+            MongoClient mongoClient= MongoClients.create(uri);
+            MongoDatabase database = mongoClient.getDatabase("CompanyMatt");
+            MongoCollection<Document> booksCollection = database.getCollection("Employee");
+
+            Bson filt=Aggregates.group(Filters.eq("Department","computer"));
+            booksCollection.find(filt).forEach(doc8 -> System.out.println(doc8.toJson()));
+
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
 
     }
 }
