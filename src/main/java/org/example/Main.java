@@ -9,6 +9,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc=new Scanner(System.in);
         Employee em=new Employee();
+        Search sr= new Search();
         while(true)
         {
             System.out.println("Enter your choice:");
@@ -25,7 +26,7 @@ public class Main {
                     em.Update();
                     break;
                 case 3:
-//                    em.delete();
+                    sr.searchemp();
                     break;
                 case 4:
                     em.delete();
