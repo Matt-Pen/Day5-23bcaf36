@@ -1,13 +1,11 @@
 package org.example;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.*;
 import com.mongodb.client.model.*;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
+import java.sql.Array;
 import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -133,8 +131,29 @@ public class Search {
             MongoDatabase database = mongoClient.getDatabase("CompanyMatt");
             MongoCollection<Document> booksCollection = database.getCollection("Employee");
 
-            Bson filt=Aggregates.group(Filters.eq("Department","computer"));
-            booksCollection.find(filt).forEach(doc8 -> System.out.println(doc8.toJson()));
+//            Bson filt=Aggregates.group(Filters.eq("Department","computer"));
+//            booksCollection.find(filt).forEach(doc8 -> System.out.println(doc8.toJson()));
+            List<Bson> countemp= Arrays.asList(Aggregates.group("$Department",Accumulators.sum("Count",1)));
+            AggregateIterable<Document> result1=booksCollection.aggregate(countemp);
+            System.out.println("Employee count by department:");
+            for(Document doc : result1){
+                String department=doc.getString("_id");
+                int count= doc.getInteger("Count");
+                System.out.println("Department: "+ department + " ,No of Employees: " + count);
+
+                Bson filter=Filters.regex("Department",department);
+                Bson proj=Projections.exclude("_id");
+//                Document doc2=booksCollection.find(filter).projection(proj).first();
+//                String name=doc2.getString("name");
+//                int empid=doc2.getInteger("Emp id");
+//                String email=doc2.getString("Email");
+
+
+
+
+                booksCollection.find(filter).projection(proj).forEach(doc2 -> System.out.println(doc2.toJson()));
+                System.out.println();
+            }
 
         }
         catch (Exception e){
