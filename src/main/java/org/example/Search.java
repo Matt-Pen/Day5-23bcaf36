@@ -148,9 +148,6 @@ public class Search {
 //                int empid=doc2.getInteger("Emp id");
 //                String email=doc2.getString("Email");
 
-
-
-
                 booksCollection.find(filter).projection(proj).forEach(doc2 -> System.out.println(doc2.toJson()));
                 System.out.println();
             }
